@@ -1,4 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useSignupMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
 
 type TSignupForm = {
   name: string;
@@ -8,6 +10,12 @@ type TSignupForm = {
 };
 
 const SignupForm = () => {
+  const [signUpUser, { isLoading }] = useSignupMutation();
+
+  if (isLoading) {
+    toast.loading("Signing up...", { id: "signup" });
+  }
+
   const {
     register,
     handleSubmit,
@@ -15,15 +23,20 @@ const SignupForm = () => {
     watch,
   } = useForm<TSignupForm>();
 
-  const onSubmit: SubmitHandler<TSignupForm> = (data) => {
-    console.log("User Data:", data);
+  const onSubmit: SubmitHandler<TSignupForm> = async (data) => {
+    const res = await signUpUser(data);
+    if (res?.data?.data) {
+      toast.success("Signup Successful! Please login.");
+    } else {
+      toast.error("Signup Failed! Please try again.");
+    }
   };
 
   const password = watch("password");
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+    <div className="min-h-screen bg-gray-100 text-slate-800 flex items-center justify-center px-4">
+      <div className="w-full max-w-md shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           Create an Account
         </h2>
@@ -45,7 +58,7 @@ const SignupForm = () => {
 
           {/* Email */}
           <div>
-            <label className="text-sm font-medium text-gray-600">Email</label>
+            <label className="text-sm font-medium">Email</label>
             <input
               type="email"
               {...register("email", {
@@ -59,13 +72,17 @@ const SignupForm = () => {
               placeholder="example@mail.com"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="text-sm font-medium text-gray-600">Password</label>
+            <label className="text-sm font-medium">
+              Password
+            </label>
             <input
               type="password"
               {...register("password", {
@@ -87,7 +104,7 @@ const SignupForm = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="text-sm font-medium text-gray-600">
+            <label className="text-sm font-medium">
               Confirm Password
             </label>
             <input
@@ -126,4 +143,4 @@ const SignupForm = () => {
   );
 };
 
-export default  SignupForm;
+export default SignupForm;

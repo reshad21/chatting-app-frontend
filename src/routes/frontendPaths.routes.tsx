@@ -1,5 +1,7 @@
 
+import LoginPage from '../login/LoginPage';
 import HomePage from '../pages/HomePage';
+import SignUpPage from '../signup/SignUpPage';
 
 export const frontendPaths = [
   {
@@ -7,14 +9,14 @@ export const frontendPaths = [
     element: <HomePage />,
   },
   
-  // {
-  //   path: "/signup",
-  //   element: <SignUpPage />,
-  // },
-  // {
-  //   path: "/login",
-  //   element: <LoginPage />,
-  // },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
   
   // {
   //   path: "/products",

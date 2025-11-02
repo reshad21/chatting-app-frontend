@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 type TLoginForm = {
   email: string;
@@ -7,19 +10,30 @@ type TLoginForm = {
 };
 
 const LoginForm = () => {
+  const navigate = useNavigate()
+  const [loginUser, { isLoading }] = useLoginMutation();
+  if (isLoading) {
+    toast.loading("Logging in...", { id: "login" });
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<TLoginForm>();
 
-  const onSubmit: SubmitHandler<TLoginForm> = (data) => {
-    console.log("Login Data:", data);
+  const onSubmit: SubmitHandler<TLoginForm> = async (data) => {
+    const res = await loginUser(data);
+    if (res?.data?.data) {
+      toast.success("Login Successful!", { id: "login" });
+      navigate("/");
+    } else {
+      toast.error("Login Failed! Please try again.", { id: "login" });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+    <div className="min-h-screen flex bg-gray-100 text-slate-800 items-center justify-center px-4">
+      <div className="w-full max-w-md shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           Login
         </h2>
@@ -43,7 +57,7 @@ const LoginForm = () => {
 
           {/* Password */}
           <div>
-            <label className="text-sm font-medium text-gray-600">Password</label>
+            <label className="text-sm font-medium">Password</label>
             <input
               type="password"
               {...register("password", {
