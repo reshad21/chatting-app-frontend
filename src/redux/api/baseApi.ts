@@ -9,8 +9,8 @@ import type { RootState } from "../store";
 
 
 const baseQuery = fetchBaseQuery({
-    // baseUrl: 'http://localhost:5000/api',
     baseUrl: 'http://localhost:5000/api',
+    // baseUrl: 'https://bike-booking-opal.vercel.app/api',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.token;

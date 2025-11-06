@@ -3,6 +3,9 @@ import type { SubmitHandler } from "react-hook-form";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { verifyToken } from "../../utils/verifyToken";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/features/auth/authSlice";
 
 type TLoginForm = {
   email: string;
@@ -10,7 +13,8 @@ type TLoginForm = {
 };
 
 const LoginForm = () => {
-  const navigate = useNavigate()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [loginUser, { isLoading }] = useLoginMutation();
   if (isLoading) {
     toast.loading("Logging in...", { id: "login" });
@@ -22,8 +26,10 @@ const LoginForm = () => {
   } = useForm<TLoginForm>();
 
   const onSubmit: SubmitHandler<TLoginForm> = async (data) => {
-    const res = await loginUser(data);
-    if (res?.data?.data) {
+    const res = await loginUser(data).unwrap();
+    if (res?.data) {
+      const user = verifyToken(res?.data?.accessToken);
+      dispatch(setUser({ user: user, token: res?.data?.accessToken }));
       toast.success("Login Successful!", { id: "login" });
       navigate("/");
     } else {
@@ -51,7 +57,9 @@ const LoginForm = () => {
               placeholder="example@mail.com"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 

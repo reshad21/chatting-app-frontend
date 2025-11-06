@@ -1,28 +1,26 @@
 import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
-    endpoints: (builder) => ({
-        login: builder.mutation({
-            query: (userInfo) => ({
-                url: '/user/login',
-                method: 'POST',
-                body: userInfo,
-            }),
-        }),
-        signup: builder.mutation({
-            query: (userInfo) => {
-                // console.log("inside base api=>", userInfo);
-                return {
-                    url: '/user/signup',
-                    method: 'POST',
-                    body: userInfo,
-                }
-            },
-        }),
-    })
+  endpoints: (builder) => ({
+    login: builder.mutation({
+      query: (userInfo) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
+    signup: builder.mutation({
+      query: (userInfo) => {
+        // console.log("inside base api=>", userInfo);
+        return {
+          url: "/auth/signup",
+          method: "POST",
+          body: userInfo,
+        };
+      },
+    }),
+    
+  }),
 });
 
-export const {
-    useLoginMutation,
-    useSignupMutation,
-} = authApi;
+export const { useLoginMutation, useSignupMutation } = authApi;

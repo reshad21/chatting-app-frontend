@@ -1,41 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// authSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
-export type TUser = {
-    [x: string]: any;
-    email: string;
-    role: string;
-    phone: string;
-    name: string;
-    address: string;
-    iat: number;
-    exp: number;
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+interface AuthState {
+    user: any;
+    token: string | null;
 }
 
-
-type TAuthState = {
-    user: null | TUser;
-    token: null | string;
-}
-
-const initialState: TAuthState = {
+const initialState: AuthState = {
     user: null,
     token: null,
-}
+};
 
-const authSlice = createSlice({
-    name: 'auth',
+export const authSlice = createSlice({
+    name: "auth",
     initialState,
     reducers: {
-        setUser: (state, action) => {
-            const { user, token } = action.payload;
-            state.user = user;
-            state.token = token;
+        setUser: (state, action: PayloadAction<{ user: any; token: string }>) => {
+            state.user = action.payload.user;
+            state.token = action.payload.token;
         },
         logOut: (state) => {
             state.user = null;
             state.token = null;
-        }
-    }
+        },
+    },
 });
 
 export const { setUser, logOut } = authSlice.actions;
