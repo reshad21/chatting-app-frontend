@@ -5,11 +5,17 @@ import ChatWindow from "../components/Home/ChatWindow"
 
 
 const HomePage = () => {
-    const [selectedChat, setSelectedChat] = useState(0)
+    const [selectedConversation, setSelectedConversation] = useState<number>(0);
     return (
         <div className="flex h-screen bg-slate-950">
-            <ChatSidebar selectedChat={selectedChat} onSelectChat={setSelectedChat} />
-            <ChatWindow selectedChat={selectedChat} />
+            <ChatSidebar 
+                onSelectConversation={(id: number) => setSelectedConversation(id)} 
+                selectedConversation={selectedConversation} 
+            />
+
+            <ChatWindow 
+                conversationId={selectedConversation}
+            />
         </div>
     );
 };

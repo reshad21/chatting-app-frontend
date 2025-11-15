@@ -7,7 +7,7 @@ import { demoMessages } from "../../../data/messages";
 import { useGetProfileQuery } from "../../redux/features/user/userApi";
 
 
-export default function ChatWindow() {
+export default function ChatWindow({conversationId}: {conversationId: number | null}) {
   const { data } = useGetProfileQuery(undefined);
   const profile = data?.data
   

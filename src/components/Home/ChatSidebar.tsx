@@ -9,57 +9,17 @@ import { useNavigate } from "react-router";
 import { useGetAllUsersQuery } from "../../redux/features/user/userApi";
 const defaultProfilePic = "https://png.pngtree.com/png-clipart/20250417/original/pngtree-digital-illustration-of-a-man-in-orange-outfit-and-glasses-with-png-image_20715987.png";
 
-// interface Chat {
-//   id: number;
-//   name: string;
-//   email: string;
-//   profilePic: string;
-//   status: "online" | "offline";
-// }
 
-// const chats: Chat[] = [
-//   {
-//     id: 1,
-//     name: "Rashed uzzaman reshad",
-//     email: "rasheduzzamanreshad@gmail.com",
-//     profilePic:
-//       "https://png.pngtree.com/png-clipart/20250417/original/pngtree-digital-illustration-of-a-man-in-orange-outfit-and-glasses-with-png-image_20715987.png",
-//     status: "online",
-//   },
-//   {
-//     id: 2,
-//     name: "Rashed uzzaman reshad",
-//     email: "rasheduzzamanreshad@gmail.com",
-//     profilePic:
-//       "https://png.pngtree.com/png-clipart/20250417/original/pngtree-digital-illustration-of-a-man-in-orange-outfit-and-glasses-with-png-image_20715987.png",
-//     status: "offline",
-//   },
-//   {
-//     id: 3,
-//     name: "Rashed uzzaman reshad",
-//     email: "rasheduzzamanreshad@gmail.com",
-//     profilePic:
-//       "https://png.pngtree.com/png-clipart/20250417/original/pngtree-digital-illustration-of-a-man-in-orange-outfit-and-glasses-with-png-image_20715987.png",
-//     status: "offline",
-//   },
-//   {
-//     id: 4,
-//     name: "Rashed uzzaman reshad",
-//     email: "rasheduzzamanreshad@gmail.com",
-//     profilePic:
-//       "https://png.pngtree.com/png-clipart/20250417/original/pngtree-digital-illustration-of-a-man-in-orange-outfit-and-glasses-with-png-image_20715987.png",
-//     status: "offline",
-//   },
-// ];
+
 
 interface ChatSidebarProps {
-  selectedChat: number;
-  onSelectChat: (id: number) => void;
+  selectedConversation: number;
+  onSelectConversation: (id: number) => void;
 }
 
 export default function ChatSidebar({
-  selectedChat,
-  onSelectChat,
+  selectedConversation,
+  onSelectConversation,
 }: ChatSidebarProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -103,9 +63,9 @@ export default function ChatSidebar({
         {filteredChats?.map((chat:any) => (
           <button
             key={chat._id}
-            onClick={() => onSelectChat(chat.id)}
+            onClick={() => onSelectConversation(chat.id)}
             className={`w-full px-4 py-3 flex items-center gap-3 border-b border-slate-800 transition-colors ${
-              selectedChat === chat.id
+              selectedConversation === chat.id
                 ? "bg-slate-800"
                 : "hover:bg-slate-800/50"
             }`}

@@ -12,7 +12,6 @@ import storage from 'redux-persist/lib/storage'
 import { baseApi } from './api/baseApi'
 import authReducer from './features/auth/authSlice'
 // import counterReducer from './features/Theme/counterSlice'
-// import themeReducer from './features/Theme/themeSlice'
 const persistConfig = {
     key: 'auth',
     storage,
@@ -24,7 +23,6 @@ export const store = configureStore({
         [baseApi.reducerPath]: baseApi.reducer,
         // counter: counterReducer,
         auth: persistedReducer,
-        // theme: themeReducer,
     },
     middleware: (getDefaultMiddlewares) =>
         getDefaultMiddlewares({
